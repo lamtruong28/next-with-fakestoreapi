@@ -3,11 +3,10 @@ import request from "~/api/request";
 import { routes } from "~/api/routes";
 type Props = {
     params: { id: string };
-    searchParams: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata(
-    { params, searchParams }: Props,
+    { params }: Props,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     // read route params
