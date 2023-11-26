@@ -1,5 +1,5 @@
 "use client";
-import { ArrowBackOutlined, HomeOutlined } from "@mui/icons-material";
+import { HomeOutlined } from "@mui/icons-material";
 import { Button, Stack } from "@mui/material";
 import Link from "next/link";
 import { paths } from "~/configs";

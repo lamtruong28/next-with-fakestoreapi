@@ -1,11 +1,12 @@
 "use client";
-import { Box } from "@mui/material";
+import Box from "@mui/material/Box";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import Image from "next/image";
 
 const banners: { index: number; src: string; alt: string }[] = [
     {
@@ -27,7 +28,7 @@ const banners: { index: number; src: string; alt: string }[] = [
 
 function Hero() {
     return (
-        <Box>
+        <Box className="pt-3">
             <Swiper
                 navigation={true}
                 modules={[Navigation, Pagination, Autoplay]}
@@ -41,13 +42,18 @@ function Hero() {
                 }}
             >
                 {banners.map((banner) => (
-                    <SwiperSlide key={banner.index}>
-                        <img
-                            srcSet={`${banner.src} 2x`}
+                    <SwiperSlide key={banner.index} className="rounded">
+                        <Image
                             src={banner.src}
                             alt={banner.alt}
-                            width={"100%"}
+                            width={1300}
+                            height={400}
                             className="rounded"
+                            sizes="100vw"
+                            style={{
+                                width: "100%",
+                                height: "600px",
+                            }}
                         />
                     </SwiperSlide>
                 ))}

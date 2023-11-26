@@ -20,6 +20,7 @@ import {
     Typography,
     styled,
 } from "@mui/material";
+import Image from "next/image";
 import { useState } from "react";
 import useSWR from "swr";
 import { routes } from "~/api/routes";
@@ -85,15 +86,18 @@ function Detail(props: any) {
                 <Grid item lg={6}>
                     <Item>
                         {data ? (
-                            <img
-                                srcSet={`${data?.image} 2x`}
+                            <Image
                                 src={data?.image}
                                 alt={data?.title}
-                                width={"100%"}
-                                height={"100%"}
+                                width={1300}
+                                height={500}
+                                className="rounded"
+                                sizes="100vw"
                                 style={{
                                     maxHeight: 500,
                                     objectFit: "contain",
+                                    width: "100%",
+                                    height: "auto",
                                 }}
                             />
                         ) : (

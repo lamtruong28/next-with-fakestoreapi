@@ -8,7 +8,6 @@ const request = {
     get: async (path: string, options = {}) => {
         try {
             const res = await request.instance.get(path, options);
-            console.log({ getRes: res });
             return {
                 status: "success",
                 payload: res.data,
