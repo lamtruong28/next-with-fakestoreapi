@@ -51,8 +51,9 @@ function Products() {
                         sx={{
                             px: 1,
                             py: 2,
+                            minHeight: "50%",
                         }}
-                        className="min-vh-100 h-100"
+                        className="h-100"
                     >
                         <Stack
                             spacing={1}

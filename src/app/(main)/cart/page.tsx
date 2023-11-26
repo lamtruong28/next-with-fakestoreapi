@@ -165,7 +165,7 @@ function Cart() {
         return selected?.reduce((total, id) => {
             const index = carts?.findIndex((item) => item.productId === id);
             return (total +=
-                carts[index]?.price || 0 * carts[index]?.quantity || 0);
+                (carts[index]?.price || 0) * (carts[index]?.quantity || 0));
         }, 0);
     }, [selected, carts]);
 
