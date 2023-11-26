@@ -124,6 +124,7 @@ function Search() {
                                             categories?.map(
                                                 (category: string) => (
                                                     <FormControlLabel
+                                                        key={category}
                                                         value={category}
                                                         control={<Radio />}
                                                         label={

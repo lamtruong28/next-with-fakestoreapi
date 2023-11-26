@@ -90,6 +90,7 @@ function Products() {
                                     />
                                     {categories?.map((category) => (
                                         <FormControlLabel
+                                            key={category}
                                             value={category}
                                             control={<Radio />}
                                             label={

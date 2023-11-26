@@ -12,7 +12,7 @@ const useOutsideClick = (
                 }
             }
         },
-        [callback]
+        [callback, refs]
     );
 
     useEffect(() => {
@@ -20,7 +20,7 @@ const useOutsideClick = (
         return () => {
             document.removeEventListener("click", handleClickOutside, true);
         };
-    }, []);
+    }, [handleClickOutside]);
 
     return handleClickOutside;
 };

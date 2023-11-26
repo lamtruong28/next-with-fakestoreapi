@@ -18,7 +18,7 @@ function useDebounce(value: string, delay: number) {
         }, delay);
         // cleanup function:
         return () => clearTimeout(handler);
-    }, [value]);
+    }, [value, delay]);
     return [debouncedValue, isLoading];
 }
 
