@@ -1,16 +1,14 @@
 "use client";
-import Image from "next/image";
-import styles from "./page.module.css";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { fetcher, localStore } from "~/utils";
-import { env } from "~/configs";
+import _ from "lodash";
 import useSWR from "swr";
-import { Box, Grid, Stack, Typography } from "@mui/material";
-import { CardProduct } from "~/components";
+import { CircularProgress, Grid, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { fetcher } from "~/utils";
+import { CardProduct, Hero } from "~/components";
+import { routes } from "~/api/routes";
 
 export default function Home() {
-    const { data, error, isLoading } = useSWR("/products", fetcher, {
+    const { data, error, isLoading } = useSWR(routes.products, fetcher, {
         revalidateIfStale: false,
         revalidateOnFocus: false,
         revalidateOnReconnect: false,
@@ -18,25 +16,37 @@ export default function Home() {
     const [featured, setFeatured] = useState<IProduct[]>([]);
     useEffect(() => {
         if (data) {
-            const uniqueNumbers = new Set(data);
-
-            const newArr = Array.from(uniqueNumbers, (number) => number);
+            const newArr = _.sampleSize(data, 4);
             setFeatured(newArr as IProduct[]);
         }
     }, [data]);
     return (
-        <main>
-            <Box>Hero</Box>
-            <Stack spacing={2}>
+        <Stack spacing={3}>
+            <Hero />
+            <Stack spacing={1}>
                 <Typography variant="h1" fontSize={26}>
                     Featured products
                 </Typography>
-                <Grid container spacing={2}>
-                    {featured?.map((item: IProduct) => (
-                        <CardProduct key={item.id} product={item} />
-                    ))}
-                </Grid>
+                {isLoading ? (
+                    <CircularProgress size={30} />
+                ) : (
+                    <Grid
+                        container
+                        spacing={2}
+                        style={{
+                            marginLeft: -16,
+                        }}
+                    >
+                        {featured?.map((item: IProduct) => (
+                            <CardProduct
+                                key={item.id}
+                                product={item}
+                                label="HOT"
+                            />
+                        ))}
+                    </Grid>
+                )}
             </Stack>
-        </main>
+        </Stack>
     );
 }

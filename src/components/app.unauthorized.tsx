@@ -11,7 +11,7 @@ function Unauthorized({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         if (!isLogged) router.replace(paths.login);
     }, []);
-    return isLogged && children;
+    return <>{children}</>;
 }
 
 export default Unauthorized;

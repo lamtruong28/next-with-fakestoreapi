@@ -3,7 +3,7 @@ import { env } from "~/configs";
 
 const request = {
     instance: axios.create({
-        baseURL: env.baseUrl,
+        baseURL: `https://${env.baseUrl}`,
     }),
     get: async (path: string, options = {}) => {
         try {

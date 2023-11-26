@@ -2,7 +2,8 @@ const paths = {
     login: "/login",
     home: "/",
     products: "/products",
-    productDetail: "/products/:id",
+    search: "/search",
+    cart: "/cart",
 };
 
 export default paths;

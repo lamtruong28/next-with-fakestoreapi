@@ -1,12 +1,13 @@
 "use client";
 import classNames from "classnames/bind";
 import {
+    Button,
     Card,
     CardActions,
     CardContent,
     CardMedia,
+    Chip,
     Grid,
-    IconButton,
     Typography,
 } from "@mui/material";
 
@@ -21,6 +22,9 @@ import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { paths } from "~/configs";
 import styles from "~/app/(main)/products/product.module.scss";
+import { addCart } from "~/store/slices/cart";
+import { useAppDispatch } from "~/hooks/reduxHooks";
+import { showToast } from "~/utils";
 
 const cx = classNames.bind(styles);
 const Item = styled(Paper)(({ theme }) => ({
@@ -31,8 +35,33 @@ const Item = styled(Paper)(({ theme }) => ({
     cursor: "pointer",
 }));
 
-function CardProduct({ product }: { product: IProduct }) {
+function CardProduct({
+    product,
+    label = "",
+}: {
+    product: IProduct;
+    label?: string;
+}) {
     const router = useRouter();
+    const dispatch = useAppDispatch();
+    const handleAddCart = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        event.stopPropagation();
+        dispatch(
+            addCart({
+                productId: product?.id,
+                productName: product?.title,
+                image: product?.image,
+                price: product?.price,
+                quantity: 1,
+            })
+        );
+        showToast({
+            message: "Added to cart",
+        });
+    };
+
     return (
         <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
             <Item
@@ -45,8 +74,18 @@ function CardProduct({ product }: { product: IProduct }) {
                     key={product.id}
                     sx={{
                         boxShadow: "none",
+                        position: "relative",
                     }}
                 >
+                    {!!label && (
+                        <Chip
+                            label="Hot"
+                            color="error"
+                            className="position-absolute start-0 top-0"
+                            sx={{ zIndex: 1, borderRadius: 1 }}
+                        />
+                    )}
+
                     <CardMedia
                         className={cx("image")}
                         component="img"
@@ -60,7 +99,7 @@ function CardProduct({ product }: { product: IProduct }) {
                     />
                     <CardContent>
                         <Typography className="text-muted">
-                            <SellOutlined />{" "}
+                            <SellOutlined color="primary" />{" "}
                             {product?.category?.[0].toUpperCase() +
                                 product?.category?.slice(1)}
                         </Typography>
@@ -80,15 +119,21 @@ function CardProduct({ product }: { product: IProduct }) {
                             {product.title}
                         </Typography>
                         <Typography fontSize={16}>
-                            <MonetizationOnOutlined />{" "}
+                            <MonetizationOnOutlined color="warning" />{" "}
                             <span className="fw-bold">{product.price}$</span>
                         </Typography>
                     </CardContent>
 
                     <CardActions disableSpacing>
-                        <IconButton aria-label="add to favorites">
-                            <AddShoppingCart />
-                        </IconButton>
+                        <Button
+                            aria-label="add to cart"
+                            startIcon={<AddShoppingCart />}
+                            variant="contained"
+                            fullWidth={true}
+                            onClick={handleAddCart}
+                        >
+                            Add to cart
+                        </Button>
                     </CardActions>
                 </Card>
             </Item>

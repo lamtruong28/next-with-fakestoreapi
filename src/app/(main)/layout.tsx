@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
-import "~/app/globals.css";
-import { Header, Unauthorized } from "~/components";
+import "~/app/globals.scss";
+import { Footer, Header, Unauthorized } from "~/components";
 
 export default function MainLayout({
     children,
@@ -13,6 +13,7 @@ export default function MainLayout({
                 <Header />
             </div>
             <div className="container py-4 margin-header">{children}</div>
+            <Footer />
         </Unauthorized>
     );
 }
