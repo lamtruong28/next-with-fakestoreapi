@@ -181,13 +181,13 @@ function Cart() {
 
         showToast({
             type: "info",
-            message: "This feature is under development",
+            message: "This feature is under construction",
         });
     };
 
     return (
         <>
-            <Stack spacing={2}>
+            <Stack spacing={2} className="pt-3">
                 <Typography variant="h1" fontSize={26}>
                     Your cart
                 </Typography>

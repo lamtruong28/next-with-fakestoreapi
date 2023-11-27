@@ -5,7 +5,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "~/app/globals.scss";
 import StoreProvider from "~/store/StoreProvider";
-import { Stack } from "@mui/material";
 
 const inter = Roboto({ weight: "400", subsets: ["latin"], display: "swap" });
 

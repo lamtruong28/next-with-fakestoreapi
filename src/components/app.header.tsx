@@ -14,12 +14,17 @@ import {
     Tooltip,
     Typography,
 } from "@mui/material";
-import { Cart, Search } from ".";
 import { LocalMallOutlined } from "@mui/icons-material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import { env } from "~/configs";
+
+import { Cart, Search } from ".";
 import { useRouter } from "next/navigation";
 import { useAppSelector } from "~/hooks/reduxHooks";
 import { cartSelector } from "~/store/selector/cartSelector";
+import request from "~/api/request";
+import { routes } from "~/api/routes";
 
 const menus: IMenu[] = [
     {
@@ -32,36 +37,58 @@ const menus: IMenu[] = [
     },
 ];
 
-const settings = [
-    {
-        key: 10,
-        label: "Personal info",
-        path: "#",
-    },
-    {
-        key: 20,
-        label: "Log out",
-        path: paths.login,
-    },
-];
-
 function Header() {
     const router = useRouter();
     const { carts } = useAppSelector(cartSelector);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
     const [openMenu, setOpenMenu] = useState<boolean>(false);
+    const [settings, setSettings] = useState<
+        { key: number; label: string; path: string }[]
+    >([
+        {
+            key: 20,
+            label: "Log out",
+            path: paths.login,
+        },
+    ]);
+
+    useEffect(() => {
+        (async () => {
+            const data = jwtDecode<{ iat: string; user: string; sub: string }>(
+                localStore.get(env.token) as string
+            );
+            if (data?.sub) {
+                const res = await request.get(`${routes.users}/${data.sub}`);
+                if (res.status === "success") {
+                    setSettings([
+                        {
+                            key: 10,
+                            label: "Personal info",
+                            path: `@${res.payload?.name.firstname}-${res.payload?.name.lastname}`,
+                        },
+                        {
+                            key: 20,
+                            label: "Log out",
+                            path: paths.login,
+                        },
+                    ]);
+                }
+            }
+        })();
+    }, []);
+
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseUserMenu = (key: string | undefined) => {
+    const handleCloseUserMenu = (key: number, path: string) => {
         switch (key) {
-            case "123":
-                router.replace(key);
+            case 10:
+                router.replace(path);
                 break;
-            case paths.login:
+            case 20:
                 localStore.clear();
-                router.replace(key);
+                router.replace(path);
                 break;
             default:
                 break;
@@ -117,13 +144,16 @@ function Header() {
                                 horizontal: "right",
                             }}
                             open={Boolean(anchorElUser)}
-                            onClose={() => handleCloseUserMenu(undefined)}
+                            onClose={() => setAnchorElUser(null)}
                         >
-                            {settings.map((setting) => (
+                            {settings?.map((setting) => (
                                 <MenuItem
                                     key={setting.key}
                                     onClick={() =>
-                                        handleCloseUserMenu(setting.path)
+                                        handleCloseUserMenu(
+                                            setting.key,
+                                            setting.path
+                                        )
                                     }
                                     disableRipple
                                 >

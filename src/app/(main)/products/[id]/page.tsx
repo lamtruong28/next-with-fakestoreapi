@@ -46,7 +46,12 @@ function Detail(props: any) {
         isLoading,
     }: { data: IProduct; error: any; isLoading: any } = useSWR(
         `${routes.products}/${params?.id}`,
-        fetcher
+        fetcher,
+        {
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        }
     );
     const [quantity, setQuantity] = useState<number>(1);
 
@@ -76,7 +81,7 @@ function Detail(props: any) {
     const handleBuyNowClick = () => {
         showToast({
             type: "info",
-            message: "This feature is under development",
+            message: "This feature is under construction",
         });
     };
 
