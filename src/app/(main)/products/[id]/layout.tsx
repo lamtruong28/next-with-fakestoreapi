@@ -14,8 +14,15 @@ export async function generateMetadata(
 
     // fetch data
     const product = await request.get(`${routes.products}/${id}`);
+
     return {
         title: product.payload.title,
+        openGraph: {
+            type: "website",
+            title: product.payload.title,
+            description: product.payload.category,
+            images: [product.payload.image],
+        },
     };
 }
 export default function DetailLayout({
