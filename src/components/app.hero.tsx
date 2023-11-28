@@ -54,6 +54,7 @@ function Hero() {
                                 width: "100%",
                                 height: "600px",
                             }}
+                            priority={true}
                         />
                     </SwiperSlide>
                 ))}
